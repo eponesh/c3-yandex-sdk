@@ -238,64 +238,111 @@ On any consume purchase failed.
 
 ### Player Name
 
-Return player name.### Player ID
+Return player name.
 
-Return player id.### Player photo (small)
+### Player ID
 
-Return player small (56x56) photo.### Player photo (medium)
+Return player id.
 
-Return player medium (84x84) photo.### Player photo (large)
+### Player photo (small)
 
-Return player large (200x200) photo.### Current Product ID
+Return player small (56x56) photo.
 
-Current product ID in each product loop.### Current Product Title
+### Player photo (medium)
 
-Current product name in each product loop.### Current Product Image
+Return player medium (84x84) photo.
 
-Current product image in each product loop.### Current Product Description
+### Player photo (large)
 
-Current product description in each product loop.### Current Product Price
+Return player large (200x200) photo.
 
-Current product price in each product loop.### Current Purchase ID
+### Current Product ID
 
-Current product ID of purchase in each purchases loop.### Current Purchase Token
+Current product ID in each product loop.
 
-Current purchase token in each purchases loop.### Current Purchase Sign
+### Current Product Title
 
-Current purchase signature in each purchases loop.### Get Purchase Token
+Current product name in each product loop.
+
+### Current Product Image
+
+Current product image in each product loop.
+
+### Current Product Description
+
+Current product description in each product loop.
+
+### Current Product Price
+
+Current product price in each product loop.
+
+### Current Purchase ID
+
+Current product ID of purchase in each purchases loop.
+
+### Current Purchase Token
+
+Current purchase token in each purchases loop.
+
+### Current Purchase Sign
+
+Current purchase signature in each purchases loop.
+
+### Get Purchase Token
 
  **Param: Product ID**  *(Product ID of purchase.)* 
 
-Get purchase token by Product ID### Last Purchase ID
+Get purchase token by Product ID
 
-Return last purchase ID.### Last Purchase Token
+### Last Purchase ID
 
-Return last purchase token.### Get Product Title
+Return last purchase ID.
 
- **Param: Product ID**  *(Product ID of purchase.)* 
+### Last Purchase Token
 
-Get product title by Product ID### Get Product Description
+Return last purchase token.
 
- **Param: Product ID**  *(Product ID of purchase.)* 
-
-Get product description by Product ID### Get Product Image
+### Get Product Title
 
  **Param: Product ID**  *(Product ID of purchase.)* 
 
-Get product image by Product ID### Get Product Price
+Get product title by Product ID
+
+### Get Product Description
 
  **Param: Product ID**  *(Product ID of purchase.)* 
 
-Get product price by Product ID### Last Player State Key
+Get product description by Product ID
 
-Return last player state key.### Last Player Data Key
+### Get Product Image
 
-Return last player data key.### Get Player State
+ **Param: Product ID**  *(Product ID of purchase.)* 
+
+Get product image by Product ID
+
+### Get Product Price
+
+ **Param: Product ID**  *(Product ID of purchase.)* 
+
+Get product price by Product ID
+
+### Last Player State Key
+
+Return last player state key.
+
+### Last Player Data Key
+
+Return last player data key.
+
+### Get Player State
 
  **Param: Key**  *(Key of player state.)* 
 
-Get player state by Key.### Get Player Data
+Get player state by Key.
+
+### Get Player Data
 
  **Param: Key**  *(Key of player data.)* 
 
 Get player data by Key.
+

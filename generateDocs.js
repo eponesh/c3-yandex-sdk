@@ -62,9 +62,10 @@ function generateCategory (name, category) {
             value: item.description
         });
 
-        if (name !== 'Expressions') {
-            docs.push({ type:'br' });
-        }
+        docs.push({
+            ignoreBB: name === 'Expressions',
+            type:'br'
+        });
     });
 }
 
