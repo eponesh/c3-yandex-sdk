@@ -3,11 +3,11 @@ Yandex SDK addon for Construct 3.
 
 ## Install
 
-## Actions
+[Download Addon](https://www.construct.net/en/make-games/addons/398/yandex-sdk) from official Scirra's Website.
 
-## Conditions
+## Docs
 
-## Expressions
+[Plugin ACE docs](docs.md)
 
 ## For Developers
 
