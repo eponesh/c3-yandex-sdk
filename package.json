@@ -1,6 +1,6 @@
 {
   "name": "c3-yandex-sdk",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Construct 3 Yandex SDK Plugin",
   "main": "plugin.js",
   "scripts": {
