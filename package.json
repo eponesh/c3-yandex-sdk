@@ -1,0 +1,31 @@
+{
+  "name": "c3-yandex-sdk",
+  "version": "1.0.0",
+  "description": "Construct 3 Yandex SDK Plugin",
+  "main": "plugin.js",
+  "scripts": {
+    "build": "node build.js",
+    "dev": "node dev-server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/eponesh/c3-yandex-sdk.git"
+  },
+  "keywords": [
+    "construct 3",
+    "yandex",
+    "sdk",
+    "c3 addon",
+    "plugin"
+  ],
+  "author": "Eponesh",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/eponesh/c3-yandex-sdk/issues"
+  },
+  "homepage": "https://github.com/eponesh/c3-yandex-sdk#readme",
+  "devDependencies": {
+    "live-server": "^1.2.1",
+    "zip-dir": "^1.0.2"
+  }
+}

@@ -1,0 +1,523 @@
+{
+  "languageTag": "en-US",
+  "fileDescription": "Strings for Yandex SDK Plugin",
+  "text": {
+    "plugins": {
+      "eponesh_yandexsdk": {
+        "name": "Yandex SDK",
+        "description": "Yandex SDK API Manager for Yandex.Games",
+        "help-url": "https://github.com/eponesh/c3-yandex-sdk",
+        "properties": {
+          "fs-enabled": {
+            "name": "Fullscreen on start",
+            "desc": "Enable Fullscreen on game start."
+          },
+          "fs-orientation": {
+            "name": "Orientation",
+            "desc": "Device orientation portrait or landscape or any.",
+            "items": {
+              "any": "Any",
+              "portrait": "Portrait",
+              "landscape": "Landscape"
+            }
+          },
+          "fs-lock-orientation": {
+            "name": "Lock orientation",
+            "desc": "Lock orientation. Yandex SDK ask user for rotate device if orientations does not match."
+          },
+          "metrica-id": {
+            "name": "Metrica ID",
+            "desc": "Yandex.Metrica Counter ID for use Metrica Actions. 0 is don't load and use Metrica."
+          }
+        },
+        "aceCategories": {
+          "ads": "Ads",
+          "metrica": "Metrica",
+          "player": "Player",
+          "purchases": "Purchases",
+          "player_state": "Player State",
+          "purchases_buy": "Purchases Buy",
+          "purchases_catalog": "Purchases Catalog",
+          "ads_rewarded_video": "Ads Rewarded Video",
+          "purchases_product": "Purchases Product"
+        },
+        "conditions": {
+          "on-adv-closed": {
+            "list-name": "On Adv Close",
+            "display-text": "On Adv Close",
+            "description": "Triggers when adv was closed (by player, adblock, or error)."
+          },
+          "on-first-adv-closed": {
+            "list-name": "On First Adv Closed",
+            "display-text": "On first adv closed",
+            "description": "Triggers when first adv was closed (by player, adblock, or error)."
+          },
+          "on-sign-in-failed": {
+            "list-name": "On Sign In Failed",
+            "display-text": "On sign in failed",
+            "description": "Yandex doesn't send player data (popup closed, client or server error, etc.)."
+          },
+          "on-sign-in-success": {
+            "list-name": "On Sign In Success",
+            "display-text": "On sign in success",
+            "description": "Triggers when player data arrived successful."
+          },
+          "is-signed-in": {
+            "list-name": "Is Signed In",
+            "display-text": "Is signed in",
+            "description": "Is Player Signed In Yandex.Passport."
+          },
+          "is-purchases-available": {
+            "list-name": "Is Purchases Available",
+            "display-text": "Is Purchases Available",
+            "description": "True if application has successul moderated purchases. False if not or error."
+          },
+          "has-any-purchase": {
+            "list-name": "Has Any Purchase",
+            "display-text": "Has any purchase",
+            "description": "Player has any purchase."
+          },
+          "on-buy-success": {
+            "list-name": "On Buy Success",
+            "display-text": "On buy [b]{0}[/b] success",
+            "description": "On buy success",
+            "params": {
+              "purchase-id": {
+                "name": "Purchase ID",
+                "desc": "Purchase ID."
+              }
+            }
+          },
+          "on-buy-failed": {
+            "list-name": "On Buy Failed",
+            "display-text": "On buy [b]{0}[/b] failed",
+            "description": "On buy failed",
+            "params": {
+              "purchase-id": {
+                "name": "Purchase ID",
+                "desc": "Purchase ID."
+              }
+            }
+          },
+          "on-any-buy-success": {
+            "list-name": "On Any Buy Success",
+            "display-text": "On any buy success",
+            "description": "On any buy success"
+          },
+          "on-any-buy-failed": {
+            "list-name": "On Any Buy Failed",
+            "display-text": "On any buy failed",
+            "description": "On any buy failed"
+          },
+          "on-purchases-load-success": {
+            "list-name": "On Purchases Load Success",
+            "display-text": "On purchases load success",
+            "description": "On player purchases load success."
+          },
+          "on-purchases-load-failed": {
+            "list-name": "On Purchases Load Failed",
+            "display-text": "On purchases load failed",
+            "description": "On player purchases load failed."
+          },
+          "on-catalog-load-success": {
+            "list-name": "On Catalog Load Success",
+            "display-text": "On catalog load success",
+            "description": "On catalog of products load success."
+          },
+          "on-catalog-load-failed": {
+            "list-name": "On Catalog Load Failed",
+            "display-text": "On catalog load failed",
+            "description": "On catalog of products load failed."
+          },
+          "has-purchase": {
+            "list-name": "Has Purchase",
+            "display-text": "Has [b]{0}[/b] purchased",
+            "description": "Has purchased product (by ID).",
+            "params": {
+              "product-id": {
+                "name": "Product ID",
+                "desc": "Product ID."
+              }
+            }
+          },
+          "each-product": {
+            "list-name": "Each Product",
+            "display-text": "For Each Product",
+            "description": "For each product in catalog."
+          },
+          "each-purchase": {
+            "list-name": "Each Purchase",
+            "display-text": "For Each Purchase",
+            "description": "For each bought player purchase."
+          },
+          "on-rewarded-video-open": {
+            "list-name": "On Rewarded Video Open",
+            "display-text": "On open rewarded video",
+            "description": "Triggers when rewarded video open."
+          },
+          "on-rewarded-video-close": {
+            "list-name": "On Rewarded Video Close",
+            "display-text": "On close rewarded video",
+            "description": "Triggers when rewarded video close."
+          },
+          "on-rewarded-video-error": {
+            "list-name": "On Rewarded Video Error",
+            "display-text": "On error rewarded video",
+            "description": "Triggers when rewarded video throw error."
+          },
+          "on-rewarded-video-reward": {
+            "list-name": "On Rewarded Video Reward",
+            "display-text": "On reward for watch video",
+            "description": "Triggers when player watched rewarded video."
+          },
+          "on-increment-state-failed": {
+            "list-name": "On Increment Player State Failed",
+            "display-text": "On increment player [b]{0}[/b] failed",
+            "description": "Trigger when increment player state key failed.",
+            "params": {
+              "key": {
+                "name": "State Key",
+                "desc": "State Key."
+              }
+            }
+          },
+          "on-set-state-failed": {
+            "list-name": "On Set Player State Failed",
+            "display-text": "On set player [b]{0}[/b] failed",
+            "description": "Trigger when set player state key failed.",
+            "params": {
+              "key": {
+                "name": "State Key",
+                "desc": "State Key."
+              }
+            }
+          },
+          "on-set-data-failed": {
+            "list-name": "On Set Player Data Failed",
+            "display-text": "On set data [b]{0}[/b] failed",
+            "description": "Trigger when set player data key failed.",
+            "params": {
+              "key": {
+                "name": "State Key",
+                "desc": "State Key."
+              }
+            }
+          },
+          "on-load-stats-success": {
+            "list-name": "On Load Player Stats Success",
+            "display-text": "On load player stats",
+            "description": "Trigger when player stats loaded."
+          },
+          "on-load-stats-failed": {
+            "list-name": "On Load Player Stats Failed",
+            "display-text": "On failed load player stats",
+            "description": "Trigger when player stats load error."
+          },
+          "on-load-data-success": {
+            "list-name": "On Load Player Data Success",
+            "display-text": "On load player data",
+            "description": "Trigger when player data loaded."
+          },
+          "on-load-data-failed": {
+            "list-name": "On Load Player Data Failed",
+            "display-text": "On failed load player data",
+            "description": "Trigger when player data load error."
+          },
+          "on-consume-success": {
+            "list-name": "On Consume Success",
+            "display-text": "On consume [b]{0}[/b] success",
+            "description": "On consume purchase success.",
+            "params": {
+              "purchase-id": {
+                "name": "Purchase ID",
+                "desc": "Purchase ID."
+              }
+            }
+          },
+          "on-consume-failed": {
+            "list-name": "On Consume Failed",
+            "display-text": "On consume [b]{0}[/b] failed",
+            "description": "On consume purchase failed.",
+            "params": {
+              "purchase-id": {
+                "name": "Purchase ID",
+                "desc": "Purchase ID."
+              }
+            }
+          },
+          "on-any-consume-success": {
+            "list-name": "On Any Consume Success",
+            "display-text": "On any consume success",
+            "description": "On any consume purchase success."
+          },
+          "on-any-consume-failed": {
+            "list-name": "On Any Consume Failed",
+            "display-text": "On any consume failed",
+            "description": "On any consume purchase failed."
+          }
+        },
+        "actions": {
+          "show-fullscreen": {
+            "list-name": "Show Fullscreen",
+            "display-text": "Show fullscreen banner",
+            "description": "Show fullscreen banner."
+          },
+          "reach-goal": {
+            "list-name": "Reach Goal",
+            "display-text": "Send [b]{0}[/b] goal to Metrica",
+            "description": "Send Goal to Yandex.Metrica",
+            "params": {
+              "goal-target": {
+                "name": "Target",
+                "desc": "Target ID (name)"
+              }
+            }
+          },
+          "sign-in": {
+            "list-name": "Sign in",
+            "display-text": "Sign in",
+            "description": "Auth player by Yandex.Passport."
+          },
+          "load-catalog": {
+            "list-name": "Load Catalog",
+            "display-text": "Load products catalog",
+            "description": "Load products catalog."
+          },
+          "load-purchases": {
+            "list-name": "Load Purchases",
+            "display-text": "Load player purchases (Auto sign in: [b]{0}[/b])",
+            "description": "Load player purchases.",
+            "params": {
+              "is-autosignin": {
+                "name": "Auto Sign In",
+                "desc": "Auto Sign In if not signed."
+              }
+            }
+          },
+          "buy": {
+            "list-name": "Buy",
+            "display-text": "Buy product [b]{0}[/b]",
+            "description": "Buy product by ID.",
+            "params": {
+              "purchase-id": {
+                "name": "Purchase ID",
+                "desc": "Purchase ID."
+              }
+            }
+          },
+          "show-rewarded-video": {
+            "list-name": "Show Rewarded Video",
+            "display-text": "Show rewarded video",
+            "description": "Show rewarded video."
+          },
+          "consume-purchase": {
+            "list-name": "Consume Purchase",
+            "display-text": "Consume purchase [b]{0}[/b].",
+            "description": "Consume purchase by id.",
+            "params": {
+              "id": {
+                "name": "ID",
+                "desc": "ID of product."
+              }
+            }
+          },
+          "increment-state": {
+            "list-name": "Increment State",
+            "display-text": "Add [b]{1}[/b] to player [b]{0}[/b].",
+            "description": "Add Value to player state key.",
+            "params": {
+              "key": {
+                "name": "Key",
+                "desc": "Name of stats key of player."
+              },
+              "value": {
+                "name": "Value",
+                "desc": "Increment by Value."
+              }
+            }
+          },
+          "set-state": {
+            "list-name": "Set Player State",
+            "display-text": "Set [b]{1}[/b] as player [b]{0}[/b].",
+            "description": "Set Value of player state key.",
+            "params": {
+              "key": {
+                "name": "Key",
+                "desc": "Name of stats key of player."
+              },
+              "value": {
+                "name": "Value",
+                "desc": "Value to set."
+              }
+            }
+          },
+          "set-data": {
+            "list-name": "Set Player Data",
+            "display-text": "Set [b]{1}[/b] as data [b]{0}[/b].",
+            "description": "Set Value of player data key.",
+            "params": {
+              "key": {
+                "name": "Key",
+                "desc": "Name of data key of player."
+              },
+              "value": {
+                "name": "Value",
+                "desc": "Value to set."
+              }
+            }
+          },
+          "load-stats": {
+            "list-name": "Load Player Stats",
+            "display-text": "Load player stats",
+            "description": "Load player stats."
+          },
+          "load-data": {
+            "list-name": "Load Player Data",
+            "display-text": "Load player data",
+            "description": "Load player data."
+          }
+        },
+        "expressions": {
+          "player-name": {
+            "translated-name": "Player Name",
+            "description": "Return player name."
+          },
+          "player-id": {
+            "translated-name": "Player ID",
+            "description": "Return player id."
+          },
+          "player-photo-small": {
+            "translated-name": "Player photo (small)",
+            "description": "Return player small (56x56) photo."
+          },
+          "player-photo-medium": {
+            "translated-name": "Player photo (medium)",
+            "description": "Return player medium (84x84) photo."
+          },
+          "player-photo-large": {
+            "translated-name": "Player photo (large)",
+            "description": "Return player large (200x200) photo."
+          },
+          "current-product-id": {
+            "translated-name": "Current Product ID",
+            "description": "Current product ID in each product loop."
+          },
+          "current-product-title": {
+            "translated-name": "Current Product Title",
+            "description": "Current product name in each product loop."
+          },
+          "current-product-image": {
+            "translated-name": "Current Product Image",
+            "description": "Current product image in each product loop."
+          },
+          "current-product-description": {
+            "translated-name": "Current Product Description",
+            "description": "Current product description in each product loop."
+          },
+          "current-product-price": {
+            "translated-name": "Current Product Price",
+            "description": "Current product price in each product loop."
+          },
+          "current-purchase-id": {
+            "translated-name": "Current Purchase ID",
+            "description": "Current product ID of purchase in each purchases loop."
+          },
+          "current-purchase-token": {
+            "translated-name": "Current Purchase Token",
+            "description": "Current purchase token in each purchases loop."
+          },
+          "current-purchase-sign": {
+            "translated-name": "Current Purchase Sign",
+            "description": "Current purchase signature in each purchases loop."
+          },
+          "get-purchase-token": {
+            "translated-name": "Get Purchase Token",
+            "description": "Get purchase token by Product ID",
+            "params": {
+              "product-id": {
+                "name": "Product ID",
+                "desc": "Product ID of purchase."
+              }
+            }
+          },
+          "last-purchase-id": {
+            "translated-name": "Last Purchase ID",
+            "description": "Return last purchase ID."
+          },
+          "last-purchase-token": {
+            "translated-name": "Last Purchase Token",
+            "description": "Return last purchase token."
+          },
+          "get-product-title": {
+            "translated-name": "Get Product Title",
+            "description": "Get product title by Product ID",
+            "params": {
+              "product-id": {
+                "name": "Product ID",
+                "desc": "Product ID of purchase."
+              }
+            }
+          },
+          "get-product-description": {
+            "translated-name": "Get Product Description",
+            "description": "Get product description by Product ID",
+            "params": {
+              "product-id": {
+                "name": "Product ID",
+                "desc": "Product ID of purchase."
+              }
+            }
+          },
+          "get-product-image": {
+            "translated-name": "Get Product Image",
+            "description": "Get product image by Product ID",
+            "params": {
+              "product-id": {
+                "name": "Product ID",
+                "desc": "Product ID of purchase."
+              }
+            }
+          },
+          "get-product-price": {
+            "translated-name": "Get Product Price",
+            "description": "Get product price by Product ID",
+            "params": {
+              "product-id": {
+                "name": "Product ID",
+                "desc": "Product ID of purchase."
+              }
+            }
+          },
+          "last-state-key": {
+            "translated-name": "Last Player State Key",
+            "description": "Return last player state key."
+          },
+          "last-data-key": {
+            "translated-name": "Last Player Data Key",
+            "description": "Return last player data key."
+          },
+          "get-state": {
+            "translated-name": "Get Player State",
+            "description": "Get player state by Key.",
+            "params": {
+              "key": {
+                "name": "Key",
+                "desc": "Key of player state."
+              }
+            }
+          },
+          "get-data": {
+            "translated-name": "Get Player Data",
+            "description": "Get player data by Key.",
+            "params": {
+              "key": {
+                "name": "Key",
+                "desc": "Key of player data."
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

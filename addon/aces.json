@@ -1,0 +1,595 @@
+{
+  "ads": {
+    "conditions": [
+      {
+        "id": "on-adv-closed",
+        "scriptName": "OnAdvClosed",
+        "highlight": false,
+        "isTrigger": true
+      },
+      {
+        "id": "on-first-adv-closed",
+        "scriptName": "OnFirstAdvClosed",
+        "highlight": false,
+        "isTrigger": true
+      }
+    ],
+    "actions": [
+      {
+        "id": "show-fullscreen",
+        "scriptName": "ShowFullscreen",
+        "highlight": false,
+        "isAsync": false
+      },
+      {
+        "id": "show-rewarded-video",
+        "scriptName": "ShowRewardedVideo",
+        "highlight": false
+      }
+    ],
+    "expressions": []
+  },
+  "metrica": {
+    "conditions": [],
+    "actions": [
+      {
+        "id": "reach-goal",
+        "scriptName": "ReachGoal",
+        "highlight": false,
+        "params": [
+          {
+            "id": "goal-target",
+            "type": "string"
+          }
+        ]
+      }
+    ],
+    "expressions": []
+  },
+  "player": {
+    "conditions": [
+      {
+        "id": "on-sign-in-failed",
+        "scriptName": "OnSignInFailed",
+        "highlight": false,
+        "isTrigger": true
+      },
+      {
+        "id": "on-sign-in-success",
+        "scriptName": "OnSignInSuccess",
+        "highlight": false,
+        "isTrigger": true
+      },
+      {
+        "id": "is-signed-in",
+        "scriptName": "IsSignedIn",
+        "highlight": false,
+        "isStatic": true
+      }
+    ],
+    "actions": [
+      {
+        "id": "sign-in",
+        "scriptName": "SignIn",
+        "highlight": false,
+        "isAsync": false
+      }
+    ],
+    "expressions": [
+      {
+        "id": "player-name",
+        "expressionName": "PlayerName",
+        "returnType": "string"
+      },
+      {
+        "id": "player-id",
+        "expressionName": "PlayerId",
+        "returnType": "string"
+      },
+      {
+        "id": "player-photo-small",
+        "expressionName": "PlayerPhotoSmall",
+        "returnType": "string"
+      },
+      {
+        "id": "player-photo-medium",
+        "expressionName": "PlayerPhotoMedium",
+        "returnType": "string"
+      },
+      {
+        "id": "player-photo-large",
+        "expressionName": "PlayerPhotoLarge",
+        "returnType": "string"
+      }
+    ]
+  },
+  "purchases": {
+    "conditions": [
+      {
+        "id": "is-purchases-available",
+        "scriptName": "IsPurchasesAvailable",
+        "highlight": false,
+        "isStatic": true
+      },
+      {
+        "id": "has-any-purchase",
+        "scriptName": "HasAnyPurchase",
+        "highlight": false,
+        "isStatic": true
+      },
+      {
+        "id": "on-purchases-load-success",
+        "scriptName": "OnPurchasesLoadSuccess",
+        "highlight": false,
+        "isTrigger": true
+      },
+      {
+        "id": "on-purchases-load-failed",
+        "scriptName": "OnPurchasesLoadFailed",
+        "highlight": false,
+        "isTrigger": true
+      },
+      {
+        "id": "has-purchase",
+        "scriptName": "HasPurchase",
+        "highlight": false,
+        "isStatic": true,
+        "params": [
+          {
+            "id": "product-id",
+            "type": "string"
+          }
+        ]
+      },
+      {
+        "id": "each-purchase",
+        "scriptName": "EachPurchase",
+        "highlight": false,
+        "isLooping": true,
+        "isInvertible": false
+      }
+    ],
+    "actions": [
+      {
+        "id": "load-catalog",
+        "scriptName": "LoadCatalog",
+        "highlight": false
+      },
+      {
+        "id": "load-purchases",
+        "scriptName": "LoadPurchases",
+        "highlight": false,
+        "params": [
+          {
+            "id": "is-autosignin",
+            "type": "boolean",
+            "initialValue": "false"
+          }
+        ]
+      },
+      {
+        "id": "buy",
+        "scriptName": "Buy",
+        "highlight": false,
+        "params": [
+          {
+            "id": "purchase-id",
+            "type": "string"
+          }
+        ]
+      },
+      {
+        "id": "consume-purchase",
+        "scriptName": "ConsumePurchase",
+        "highlight": false,
+        "params": [
+          {
+            "id": "id",
+            "type": "string"
+          }
+        ]
+      }
+    ],
+    "expressions": [
+      {
+        "id": "current-purchase-id",
+        "expressionName": "CurrentPurchaseID",
+        "returnType": "string"
+      },
+      {
+        "id": "current-purchase-token",
+        "expressionName": "CurrentPurchaseToken",
+        "returnType": "string"
+      },
+      {
+        "id": "current-purchase-sign",
+        "expressionName": "CurrentPurchaseSign",
+        "returnType": "string"
+      },
+      {
+        "id": "get-purchase-token",
+        "expressionName": "GetPurchaseToken",
+        "returnType": "string",
+        "params": [
+          {
+            "id": "product-id",
+            "type": "number"
+          }
+        ]
+      },
+      {
+        "id": "last-purchase-id",
+        "expressionName": "LastPurchaseId",
+        "returnType": "string"
+      },
+      {
+        "id": "last-purchase-token",
+        "expressionName": "LastPurchaseToken",
+        "returnType": "string"
+      }
+    ]
+  },
+  "player_state": {
+    "conditions": [
+      {
+        "id": "on-increment-state-failed",
+        "scriptName": "OnIncrementPlayerStateFailed",
+        "highlight": false,
+        "isTrigger": true,
+        "params": [
+          {
+            "id": "key",
+            "type": "string"
+          }
+        ]
+      },
+      {
+        "id": "on-set-state-failed",
+        "scriptName": "OnSetPlayerStateFailed",
+        "highlight": false,
+        "isTrigger": true,
+        "params": [
+          {
+            "id": "key",
+            "type": "string"
+          }
+        ]
+      },
+      {
+        "id": "on-set-data-failed",
+        "scriptName": "OnSetPlayerDataFailed",
+        "highlight": false,
+        "isTrigger": true,
+        "params": [
+          {
+            "id": "key",
+            "type": "string"
+          }
+        ]
+      },
+      {
+        "id": "on-load-stats-success",
+        "scriptName": "OnLoadPlayerStatsSuccess",
+        "highlight": false,
+        "isTrigger": true
+      },
+      {
+        "id": "on-load-stats-failed",
+        "scriptName": "OnLoadPlayerStatsFailed",
+        "highlight": false,
+        "isTrigger": true
+      },
+      {
+        "id": "on-load-data-success",
+        "scriptName": "OnLoadPlayerDataSuccess",
+        "highlight": false,
+        "isTrigger": true
+      },
+      {
+        "id": "on-load-data-failed",
+        "scriptName": "OnLoadPlayerDataFailed",
+        "highlight": false,
+        "isTrigger": true
+      }
+    ],
+    "actions": [
+      {
+        "id": "increment-state",
+        "scriptName": "IncrementState",
+        "highlight": false,
+        "params": [
+          {
+            "id": "key",
+            "type": "string"
+          },
+          {
+            "id": "value",
+            "type": "number"
+          }
+        ]
+      },
+      {
+        "id": "set-state",
+        "scriptName": "SetState",
+        "highlight": false,
+        "params": [
+          {
+            "id": "key",
+            "type": "string"
+          },
+          {
+            "id": "value",
+            "type": "number"
+          }
+        ]
+      },
+      {
+        "id": "set-data",
+        "scriptName": "SetData",
+        "highlight": false,
+        "params": [
+          {
+            "id": "key",
+            "type": "string"
+          },
+          {
+            "id": "value",
+            "type": "any"
+          }
+        ]
+      },
+      {
+        "id": "load-stats",
+        "scriptName": "LoadStats",
+        "highlight": false
+      },
+      {
+        "id": "load-data",
+        "scriptName": "LoadData",
+        "highlight": false
+      }
+    ],
+    "expressions": [
+      {
+        "id": "last-state-key",
+        "expressionName": "LastPlayerStateKey",
+        "returnType": "string"
+      },
+      {
+        "id": "last-data-key",
+        "expressionName": "LastPlayerDataKey",
+        "returnType": "string"
+      },
+      {
+        "id": "get-state",
+        "expressionName": "GetPlayerState",
+        "returnType": "number",
+        "params": [
+          {
+            "id": "key",
+            "type": "string"
+          }
+        ]
+      },
+      {
+        "id": "get-data",
+        "expressionName": "GetPlayerData",
+        "returnType": "string",
+        "params": [
+          {
+            "id": "key",
+            "type": "string"
+          }
+        ]
+      }
+    ]
+  },
+  "purchases_buy": {
+    "conditions": [
+      {
+        "id": "on-buy-success",
+        "scriptName": "OnBuySuccess",
+        "highlight": false,
+        "isTrigger": true,
+        "params": [
+          {
+            "id": "purchase-id",
+            "type": "string"
+          }
+        ]
+      },
+      {
+        "id": "on-buy-failed",
+        "scriptName": "OnBuyFailed",
+        "highlight": false,
+        "isTrigger": true,
+        "params": [
+          {
+            "id": "purchase-id",
+            "type": "string"
+          }
+        ]
+      },
+      {
+        "id": "on-any-buy-success",
+        "scriptName": "OnAnyBuySuccess",
+        "highlight": false,
+        "isTrigger": true
+      },
+      {
+        "id": "on-any-buy-failed",
+        "scriptName": "OnAnyBuyFailed",
+        "highlight": false,
+        "isTrigger": true
+      },
+      {
+        "id": "on-consume-success",
+        "scriptName": "OnConsumeSuccess",
+        "highlight": false,
+        "isTrigger": true,
+        "params": [
+          {
+            "id": "purchase-id",
+            "type": "string"
+          }
+        ]
+      },
+      {
+        "id": "on-consume-failed",
+        "scriptName": "OnConsumeFailed",
+        "highlight": false,
+        "isTrigger": true,
+        "params": [
+          {
+            "id": "purchase-id",
+            "type": "string"
+          }
+        ]
+      },
+      {
+        "id": "on-any-consume-success",
+        "scriptName": "OnAnyConsumeSuccess",
+        "highlight": false,
+        "isTrigger": true
+      },
+      {
+        "id": "on-any-consume-failed",
+        "scriptName": "OnAnyConsumeFailed",
+        "highlight": false,
+        "isTrigger": true
+      }
+    ],
+    "actions": [],
+    "expressions": []
+  },
+  "purchases_catalog": {
+    "conditions": [
+      {
+        "id": "on-catalog-load-success",
+        "scriptName": "OnCatalogLoadSuccess",
+        "highlight": false,
+        "isTrigger": true
+      },
+      {
+        "id": "on-catalog-load-failed",
+        "scriptName": "OnCatalogLoadFailed",
+        "highlight": false,
+        "isTrigger": true
+      },
+      {
+        "id": "each-product",
+        "scriptName": "EachProduct",
+        "highlight": false,
+        "isLooping": true,
+        "isInvertible": false
+      }
+    ],
+    "actions": [],
+    "expressions": []
+  },
+  "ads_rewarded_video": {
+    "conditions": [
+      {
+        "id": "on-rewarded-video-open",
+        "scriptName": "OnRewardedVideoOpen",
+        "highlight": false,
+        "isTrigger": true
+      },
+      {
+        "id": "on-rewarded-video-close",
+        "scriptName": "OnRewardedVideoClose",
+        "highlight": false,
+        "isTrigger": true
+      },
+      {
+        "id": "on-rewarded-video-error",
+        "scriptName": "OnRewardedVideoError",
+        "highlight": false,
+        "isTrigger": true
+      },
+      {
+        "id": "on-rewarded-video-reward",
+        "scriptName": "OnRewardedVideoReward",
+        "highlight": false,
+        "isTrigger": true
+      }
+    ],
+    "actions": [],
+    "expressions": []
+  },
+  "purchases_product": {
+    "conditions": [],
+    "actions": [],
+    "expressions": [
+      {
+        "id": "current-product-id",
+        "expressionName": "CurrentProductID",
+        "returnType": "string"
+      },
+      {
+        "id": "current-product-title",
+        "expressionName": "CurrentProductTitle",
+        "returnType": "string"
+      },
+      {
+        "id": "current-product-image",
+        "expressionName": "CurrentProductImage",
+        "returnType": "string"
+      },
+      {
+        "id": "current-product-description",
+        "expressionName": "CurrentProductDescription",
+        "returnType": "string"
+      },
+      {
+        "id": "current-product-price",
+        "expressionName": "CurrentProductPrice",
+        "returnType": "number"
+      },
+      {
+        "id": "get-product-title",
+        "expressionName": "GetProductTitle",
+        "returnType": "string",
+        "params": [
+          {
+            "id": "product-id",
+            "type": "number"
+          }
+        ]
+      },
+      {
+        "id": "get-product-description",
+        "expressionName": "GetProductDescription",
+        "returnType": "string",
+        "params": [
+          {
+            "id": "product-id",
+            "type": "number"
+          }
+        ]
+      },
+      {
+        "id": "get-product-image",
+        "expressionName": "GetProductImage",
+        "returnType": "string",
+        "params": [
+          {
+            "id": "product-id",
+            "type": "number"
+          }
+        ]
+      },
+      {
+        "id": "get-product-price",
+        "expressionName": "GetProductPrice",
+        "returnType": "string",
+        "params": [
+          {
+            "id": "product-id",
+            "type": "number"
+          }
+        ]
+      }
+    ]
+  }
+}
