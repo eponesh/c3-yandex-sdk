@@ -16,25 +16,6 @@
             this.purchases = [];
             this.products = [];
 
-            this.products = [{
-				productID: 'Demo1',
-				title: 'Demo 1',
-				description: 'Demo 1 Product',
-				imageURI: '//none.jpg',
-				price: '99Р',
-			}, {
-				productID: 'Demo2',
-				title: 'Demo 2',
-				description: 'Demo 2 Product',
-				imageURI: '//none.jpg',
-				price: '199Р',
-			}];
-			this.purchases = [{
-				productID: 'Demo2',
-				purchaseToken: 'ff4h3h34hdhc4i',
-				signature: '89823nbynx3nbw37tbwn387bxe7y634bx34b7n9x'
-			}];
-
             this.playerData = {};
             this.playerStats = {};
 
