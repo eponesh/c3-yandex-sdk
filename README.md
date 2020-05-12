@@ -1,6 +1,8 @@
 # Construct 3 [PLUGIN]: Yandex SDK
 Yandex SDK addon for Construct 3.
 
+![Actions](https://sun9-53.userapi.com/c855532/v855532844/23ad55/Kzwxf42xxEg.jpg)
+
 ## Install
 
 [Download Addon](https://www.construct.net/en/make-games/addons/398/yandex-sdk) from official Scirra's Website.
