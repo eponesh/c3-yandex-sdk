@@ -15,6 +15,13 @@ docs.push({
 });
 docs.push({ type:'br' });
 
+docs.push({
+    type: 'tip',
+    value: 'Uses DOM objects, such as window and document! You need to turn off "Use Worker" in project settings.'
+});
+
+docs.push({ type:'br' });
+
 Object.values(plugin.properties).forEach((param) => {
     docs.push({
         type: 'b',
@@ -94,7 +101,7 @@ const mkMap = {
     b: v => ` **${v}** `,
     i: v => ` *${v}* `,
     s: v => ` ~~${v}~~ `,
-    tip: v => ` \`\`\`${v}\`\`\` `,
+    tip: v => ` > ${v}`,
 };
 
 const bbCode = docs.filter(r => !r.ignoreBB).reduce((text, row) => `${text}${bbMap[row.type](row.value)}`, '');

@@ -2,6 +2,8 @@
 
 Yandex SDK API Manager for Yandex.Games
 
+ > Uses DOM objects, such as window and document! You need to turn off "Use Worker" in project settings.
+
  **Param: Fullscreen on start**  *(Enable Fullscreen on game start.)* 
 
  **Param: Orientation**  *(Device orientation portrait or landscape or any.)* 
