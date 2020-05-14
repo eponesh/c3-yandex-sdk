@@ -1,6 +1,6 @@
 "use strict";
 {
-    C3.Plugins.Eponesh_YandexSDK.Exps = {
+    var Exps = {
         PlayerName() {
             return this.player ? this.player.getName() : '';
         },
@@ -22,35 +22,35 @@
         },
 
         CurrentProductID() {
-            return this.currentProductID;
+            return this.currentProductID || '';
         },
 
         CurrentProductTitle() {
-            return this.currentProductTitle;
+            return this.currentProductTitle || '';
         },
 
         CurrentProductImage() {
-            return this.currentProductImage;
+            return this.currentProductImage || '';
         },
 
         CurrentProductDescription() {
-            return this.currentProductDescription;
+            return this.currentProductDescription || '';
         },
 
         CurrentProductPrice() {
-            return this.currentProductPrice;
+            return this.currentProductPrice || 0;
         },
 
         CurrentPurchaseID() {
-            return this.currentPurchaseID;
+            return this.currentPurchaseID || '';
         },
 
         CurrentPurchaseToken() {
-            return this.currentPurchaseToken;
+            return this.currentPurchaseToken || '';
         },
 
         CurrentPurchaseSign() {
-            return this.currentPurchaseSign;
+            return this.currentPurchaseSign || '';
         },
 
         GetPurchaseToken(productId) {
@@ -58,11 +58,11 @@
         },
 
         LastPurchaseId() {
-            return this.lastPurchaseID;
+            return this.lastPurchaseID || '';
         },
 
         LastPurchaseToken() {
-            return this.lastPurchaseToken;
+            return this.lastPurchaseToken || '';
         },
 
         GetProductTitle(productId) {
@@ -82,11 +82,11 @@
         },
 
         LastPlayerStateKey() {
-            return this.lastStateKey;
+            return this.lastStateKey || '';
         },
 
         LastPlayerDataKey() {
-            return this.lastDataKey;
+            return this.lastDataKey || '';
         },
 
         GetPlayerState(key) {
@@ -97,4 +97,12 @@
             return this.playerData[key] || '';
         }
     };
+
+    if (globalThis.C3) {
+        C3.Plugins.Eponesh_YandexSDK.Exps = Exps;
+    }
+
+    try { module.exports = Exps } catch (e) {}
+
+    Exps;
 }

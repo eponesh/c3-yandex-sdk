@@ -1,10 +1,17 @@
 "use strict";
 {
-    C3.Plugins.Eponesh_YandexSDK.Instance = class YandexSDKInstance extends C3.SDKInstanceBase {
+    var SDKInstanceBase = globalThis.C3 ? globalThis.C3.SDKInstanceBase : class {}
+    var Instance = class YandexSDKInstance extends SDKInstanceBase {
         constructor(inst, properties = []) {
             super(inst);
+            if (!globalThis.C3) {
+                return;
+            }
             this.conditions = C3.Plugins.Eponesh_YandexSDK.Cnds;
+            this.init(properties);
+        }
 
+        init (properties) {
             this.ready = new Promise(resolve => this.init = resolve);
 
             this.enableFullscreenOnStart = properties[0];
@@ -182,4 +189,12 @@
             });
         }
     };
+
+    if (globalThis.C3) {
+        C3.Plugins.Eponesh_YandexSDK.Instance = Instance;
+    }
+
+    try { module.exports = Instance } catch (e) {}
+
+    Instance;
 }

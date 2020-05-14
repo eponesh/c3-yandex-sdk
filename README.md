@@ -37,6 +37,12 @@ Use `addon.json` link [`http://localhost:8080/addon.json`](http://localhost:8080
 
 4. Read [how to use developer mode](https://www.construct.net/en/make-games/manuals/addon-sdk/guide/using-developer-mode).
 
+5. For dev C2 runtime
+
+```sh
+npm run dev:c2
+```
+
 ### Production build
 
 ```sh

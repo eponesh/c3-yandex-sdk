@@ -1,6 +1,6 @@
 "use strict";
 {
-    C3.Plugins.Eponesh_YandexSDK.Acts = {
+    var Acts = {
         async ShowFullscreen() {
             await this.ready;
             this.ysdk.adv.showFullscreenAdv({ callbacks: {} });
@@ -146,4 +146,12 @@
             }
         }
     };
+
+    if (globalThis.C3) {
+        C3.Plugins.Eponesh_YandexSDK.Acts = Acts;
+    }
+
+    try { module.exports = Acts } catch (e) {}
+
+    Acts;
 }

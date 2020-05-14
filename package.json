@@ -1,11 +1,12 @@
 {
   "name": "c3-yandex-sdk",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "Construct 3 Yandex SDK Plugin",
   "main": "plugin.js",
   "scripts": {
     "build": "node build.js",
-    "dev": "node dev-server.js"
+    "dev": "node dev-server.js",
+    "dev:c2": "webpack --watch --mode none"
   },
   "repository": {
     "type": "git",
@@ -26,6 +27,8 @@
   "homepage": "https://github.com/eponesh/c3-yandex-sdk#readme",
   "devDependencies": {
     "live-server": "^1.2.1",
+    "webpack": "^4.43.0",
+    "webpack-cli": "^3.3.11",
     "zip-dir": "^1.0.2"
   }
 }
