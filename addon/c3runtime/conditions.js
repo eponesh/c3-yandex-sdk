@@ -151,6 +151,10 @@
             return true;
         },
 
+        IsRewardedVideoPlaying() {
+            return this.isRewardedVideoPlaying;
+        },
+
         OnIncrementPlayerStateFailed(key) {
             return key === this.lastStateKey;
         },
@@ -193,7 +197,20 @@
 
         OnAnyConsumeFailed() {
             return true;
-        }
+        },
+
+        OnBannerDisplayed(bannerID) {
+            return bannerID === this.lastBannerID;
+        },
+
+        OnBannerDestroyed(bannerID) {
+            return bannerID === this.lastBannerID;
+        },
+
+        IsBannerDisplaying(bannerID) {
+            const banner = this.banners[bannerID];
+            return !!(banner && banner.displayed);
+        },
     };
 
     if (globalThis.C3) {

@@ -13,12 +13,17 @@
 
         init (properties) {
             this.ready = new Promise(resolve => this.init = resolve);
+            this.rtbReady = new Promise(resolve => this.initRTB = resolve);
 
             this.enableFullscreenOnStart = properties[0];
             this.setOrientation(properties[1]);
             this.isOrientationLocked = properties[2];
 
             this.metricaId = properties[3];
+            this.enableRTB = properties[4];
+
+            this.banners = {};
+            this.isRewardedVideoPlaying = false;
 
             this.purchases = [];
             this.products = [];
@@ -52,6 +57,10 @@
     
                     document.addEventListener(`yacounter${this.metricaId}inited`, resolve);
                 });
+            }
+
+            if (this.enableRTB) {
+                this.loadRTB();
             }
 
             this.loadSDK();
@@ -187,6 +196,19 @@
                 accurateTrackBounce: true,
                 triggerEvent: true
             });
+        }
+
+        loadRTB () {
+            ((w, d, n, s, t) => {
+                w[n] = w[n] || [];
+                t = d.getElementsByTagName("script")[0];
+                s = d.createElement("script");
+                s.onload = () => this.initRTB();
+                s.type = "text/javascript";
+                s.src = "//an.yandex.ru/system/context.js";
+                s.async = true;
+                t.parentNode.insertBefore(s, t);
+            })(window, document, "yandexContextAsyncCallbacks");
         }
     };
 

@@ -92,11 +92,11 @@
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _addon_c3runtime_instance__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
 /* harmony import */ var _addon_c3runtime_instance__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_addon_c3runtime_instance__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _addon_c3runtime_conditions__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(3);
+/* harmony import */ var _addon_c3runtime_conditions__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(2);
 /* harmony import */ var _addon_c3runtime_conditions__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_addon_c3runtime_conditions__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _addon_c3runtime_expressions__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(4);
+/* harmony import */ var _addon_c3runtime_expressions__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(3);
 /* harmony import */ var _addon_c3runtime_expressions__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_addon_c3runtime_expressions__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _addon_c3runtime_actions__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(5);
+/* harmony import */ var _addon_c3runtime_actions__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(4);
 /* harmony import */ var _addon_c3runtime_actions__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_addon_c3runtime_actions__WEBPACK_IMPORTED_MODULE_3__);
 
 
@@ -209,12 +209,17 @@ cr.plugins_.Eponesh_YandexSDK = function(runtime) {
 
         init (properties) {
             this.ready = new Promise(resolve => this.init = resolve);
+            this.rtbReady = new Promise(resolve => this.initRTB = resolve);
 
             this.enableFullscreenOnStart = properties[0];
             this.setOrientation(properties[1]);
             this.isOrientationLocked = properties[2];
 
             this.metricaId = properties[3];
+            this.enableRTB = properties[4];
+
+            this.banners = {};
+            this.isRewardedVideoPlaying = false;
 
             this.purchases = [];
             this.products = [];
@@ -248,6 +253,10 @@ cr.plugins_.Eponesh_YandexSDK = function(runtime) {
     
                     document.addEventListener(`yacounter${this.metricaId}inited`, resolve);
                 });
+            }
+
+            if (this.enableRTB) {
+                this.loadRTB();
             }
 
             this.loadSDK();
@@ -384,6 +393,19 @@ cr.plugins_.Eponesh_YandexSDK = function(runtime) {
                 triggerEvent: true
             });
         }
+
+        loadRTB () {
+            ((w, d, n, s, t) => {
+                w[n] = w[n] || [];
+                t = d.getElementsByTagName("script")[0];
+                s = d.createElement("script");
+                s.onload = () => this.initRTB();
+                s.type = "text/javascript";
+                s.src = "//an.yandex.ru/system/context.js";
+                s.async = true;
+                t.parentNode.insertBefore(s, t);
+            })(window, document, "yandexContextAsyncCallbacks");
+        }
     };
 
     if (globalThis.C3) {
@@ -397,8 +419,7 @@ cr.plugins_.Eponesh_YandexSDK = function(runtime) {
 
 
 /***/ }),
-/* 2 */,
-/* 3 */
+/* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -555,6 +576,10 @@ cr.plugins_.Eponesh_YandexSDK = function(runtime) {
             return true;
         },
 
+        IsRewardedVideoPlaying() {
+            return this.isRewardedVideoPlaying;
+        },
+
         OnIncrementPlayerStateFailed(key) {
             return key === this.lastStateKey;
         },
@@ -597,7 +622,20 @@ cr.plugins_.Eponesh_YandexSDK = function(runtime) {
 
         OnAnyConsumeFailed() {
             return true;
-        }
+        },
+
+        OnBannerDisplayed(bannerID) {
+            return bannerID === this.lastBannerID;
+        },
+
+        OnBannerDestroyed(bannerID) {
+            return bannerID === this.lastBannerID;
+        },
+
+        IsBannerDisplaying(bannerID) {
+            const banner = this.banners[bannerID];
+            return !!(banner && banner.displayed);
+        },
     };
 
     if (globalThis.C3) {
@@ -611,7 +649,7 @@ cr.plugins_.Eponesh_YandexSDK = function(runtime) {
 
 
 /***/ }),
-/* 4 */
+/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -712,6 +750,10 @@ cr.plugins_.Eponesh_YandexSDK = function(runtime) {
 
         GetPlayerData(key) {
             return this.playerData[key] || '';
+        },
+
+        LastBanner() {
+            return this.lastBannerID;
         }
     };
 
@@ -726,16 +768,179 @@ cr.plugins_.Eponesh_YandexSDK = function(runtime) {
 
 
 /***/ }),
-/* 5 */
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 {
+    const DEFAULT_BANNER_STYLES = `
+        display: flex;
+        justify-content: center;
+        align-tems: center;
+        position: absolute;
+        z-index: 10;
+    `;
+
     var Acts = {
         async ShowFullscreen() {
             await this.ready;
             this.ysdk.adv.showFullscreenAdv({ callbacks: {} });
+        },
+
+        async CreateBanner(id, x = 0, y = 0, width = 0, height = 0, styles) {
+            if (this.banners[id]) {
+                return;
+            }
+            await this.rtbReady;
+            const div = document.createElement('div');
+            this.banners[id] = {
+                $el: div,
+                displayed: false
+            };
+
+            div.id = `yandex_rtb_${id}`;
+            div.style.cssText = `
+                ${DEFAULT_BANNER_STYLES}
+                top: ${x}px;
+                left: ${y}px;
+                width: ${width === 0 ? 'auto' : `${width}px`};
+                height: ${height === 0 ? 'auto' : `${height}px`};
+                ${styles}
+            `;
+
+            document.body.appendChild(div);
+
+            Ya.Context.AdvManager.render({
+                blockId: id,
+                renderTo: div.id,
+                async: true,
+                onRender: () => {
+                    this.banners[id].displayed = true;
+                    this.lastBannerID = id;
+                    this.Trigger(this.conditions.OnBannerDisplayed);
+                }
+            });
+        },
+
+        async CreateStickyBanner(id, position = 0, width = 0, height = 0, styles) {
+            if (this.banners[id]) {
+                return;
+            }
+            await this.rtbReady;
+            const div = document.createElement('div');
+            this.banners[id] = {
+                $el: div,
+                displayed: false
+            };
+            div.id = `yandex_rtb_${id}`;
+            const positionStyles = (() => {
+                switch (position) {
+                    case 0: {
+                        return 'top: 0; left: 0;';
+                    }
+                    case 1: {
+                        return 'top: 0; left: 50%; transform: translateX(-50%);';
+                    }
+                    case 2: {
+                        return 'top: 0; right: 0;';
+                    }
+                    case 3: {
+                        return 'top: 0; left: 0; bottom: 0;';
+                    }
+                    case 4: {
+                        return 'top: 50%; left: 50%; transform: translate(-50%, -50%);';
+                    }
+                    case 5: {
+                        return 'top: 0; right: 0; bottom: 0;';
+                    }
+                    case 6: {
+                        return 'bottom: 0; left: 0;';
+                    }
+                    case 7: {
+                        return 'bottom: 0; left: 50%; transform: translateX(-50%);';
+                    }
+                    case 8: {
+                        return 'bottom: 0; right: 0;';
+                    }
+                    default: {
+                        return '';
+                    }
+                }
+            })();
+
+            div.style.cssText = `
+                ${DEFAULT_BANNER_STYLES}
+                ${positionStyles}
+                width: ${width === 0 ? '100%' : `${width}px`};
+                height: ${height === 0 ? '100%' : `${height}px`};
+                ${styles}
+            `;
+
+            document.body.appendChild(div);
+
+            Ya.Context.AdvManager.render({
+                blockId: id,
+                renderTo: div.id,
+                async: true,
+                onRender: () => {
+                    this.banners[id].displayed = true;
+                    this.lastBannerID = id;
+                    this.Trigger(this.conditions.OnBannerDisplayed);
+                }
+            });
+        },
+
+        async DisplayBanner(id) {
+            const banner = this.banners[id];
+            if (!banner) {
+                return;
+            }
+
+            await this.rtbReady;
+            Ya.Context.AdvManager.render({
+                blockId: id,
+                renderTo: banner.$el.id,
+                async: true,
+                onRender: () => {
+                    this.lastBannerID = id;
+                    banner.displayed = true;
+                    this.Trigger(this.conditions.OnBannerDisplayed);
+                }
+            });
+        },
+
+        async RefreshBanner(id) {
+            const banner = this.banners[id];
+            if (!banner) {
+                return;
+            }
+
+            await this.rtbReady;
+            Ya.Context.AdvManager.destroy(id);
+            Ya.Context.AdvManager.render({
+                blockId: id,
+                renderTo: banner.$el.id,
+                async: true,
+                onRender: () => {
+                    this.lastBannerID = id;
+                    banner.displayed = true;
+                    this.Trigger(this.conditions.OnBannerDisplayed);
+                }
+            });
+        },
+
+        async DestroyBanner(id) {
+            const banner = this.banners[id];
+            if (!banner) {
+                return;
+            }
+
+            await this.rtbReady;
+            Ya.Context.AdvManager.destroy(id);
+            this.lastBannerID = id;
+            banner.displayed = false;
+            this.Trigger(this.conditions.OnBannerDestroyed);
         },
 
         async ReachGoal(target) {
@@ -793,9 +998,15 @@ cr.plugins_.Eponesh_YandexSDK = function(runtime) {
             await this.ready;
             try {
                 const callbacks = {
-                    onOpen: () => this.Trigger(this.conditions.OnRewardedVideoOpen),
+                    onOpen: () => {
+                        this.isRewardedVideoPlaying = true;
+                        this.Trigger(this.conditions.OnRewardedVideoOpen)
+                    },
                     onRewarded: () => this.Trigger(this.conditions.OnRewardedVideoReward),
-                    onClose: () => this.Trigger(this.conditions.OnRewardedVideoClose),
+                    onClose: () => {
+                        this.isRewardedVideoPlaying = false;
+                        this.Trigger(this.conditions.OnRewardedVideoClose)
+                    },
                     onError: () => this.Trigger(this.conditions.OnRewardedVideoError)
                 };
                 this.ysdk.adv.showRewardedVideo({ callbacks });

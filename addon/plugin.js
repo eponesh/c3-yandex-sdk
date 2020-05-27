@@ -1,7 +1,7 @@
 "use strict";
 {
     const PLUGIN_ID = "Eponesh_YandexSDK";
-    const PLUGIN_VERSION = "1.1.0";
+    const PLUGIN_VERSION = "1.2.0";
     const PLUGIN_CATEGORY = "platform-specific";
 
     const PLUGIN_CLASS = SDK.Plugins.Eponesh_YandexSDK = class YandexSDKPlugin extends SDK.IPluginBase {
@@ -29,7 +29,8 @@
                     "initialValue": "any"
                 }),
                 new SDK.PluginProperty("check", "fs-lock-orientation", true),
-                new SDK.PluginProperty("integer", "metrica-id", 0)
+                new SDK.PluginProperty("integer", "metrica-id", 0),
+                new SDK.PluginProperty("check", "rtb-enabled", false)
             ]);
 
             SDK.Lang.PopContext(); //.properties

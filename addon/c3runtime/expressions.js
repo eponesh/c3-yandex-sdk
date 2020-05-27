@@ -95,6 +95,10 @@
 
         GetPlayerData(key) {
             return this.playerData[key] || '';
+        },
+
+        LastBanner() {
+            return this.lastBannerID;
         }
     };
 

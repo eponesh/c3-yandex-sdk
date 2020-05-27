@@ -10,15 +10,21 @@
       {
         "id": "on-first-adv-closed",
         "scriptName": "OnFirstAdvClosed",
-        "highlight": false,
+        "highlight": true,
         "isTrigger": true
+      },
+      {
+        "id": "is-rewarded-video-playing",
+        "scriptName": "IsRewardedVideoPlaying",
+        "highlight": false,
+        "isStatic": true
       }
     ],
     "actions": [
       {
         "id": "show-fullscreen",
         "scriptName": "ShowFullscreen",
-        "highlight": false,
+        "highlight": true,
         "isAsync": false
       },
       {
@@ -28,6 +34,156 @@
       }
     ],
     "expressions": []
+  },
+  "rtb": {
+    "conditions": [
+      {
+        "id": "on-banner-displayed",
+        "scriptName": "OnBannerDisplayed",
+        "highlight": false,
+        "isTrigger": true,
+        "params": [
+          {
+            "id": "rtb-id",
+            "type": "string"
+          }
+        ]
+      },
+      {
+        "id": "on-banner-destroyed",
+        "scriptName": "OnBannerDestroyed",
+        "highlight": false,
+        "isTrigger": true,
+        "params": [
+          {
+            "id": "rtb-id",
+            "type": "string"
+          }
+        ]
+      },
+      {
+        "id": "is-banner-displaying",
+        "scriptName": "IsBannerDisplaying",
+        "highlight": false,
+        "isStatic": true,
+        "params": [
+          {
+            "id": "rtb-id",
+            "type": "string"
+          }
+        ]
+      }
+    ],
+    "actions": [
+      {
+        "id": "create-banner",
+        "scriptName": "CreateBanner",
+        "highlight": false,
+        "isAsync": false,
+        "params": [
+          {
+            "id": "rtb-id",
+            "type": "string"
+          },
+          {
+            "id": "rtb-x",
+            "type": "number"
+          },
+          {
+            "id": "rtb-y",
+            "type": "number"
+          },
+          {
+            "id": "rtb-width",
+            "type": "number"
+          },
+          {
+            "id": "rtb-height",
+            "type": "number"
+          },
+          {
+            "id": "rtb-styles",
+            "type": "string"
+          }
+        ]
+      },
+      {
+        "id": "create-sticky-banner",
+        "scriptName": "CreateStickyBanner",
+        "highlight": true,
+        "isAsync": false,
+        "params": [
+          {
+            "id": "rtb-id",
+            "type": "string"
+          },
+          {
+            "id": "rtb-position",
+            "type": "combo",
+            "items": [
+              "top-left", "top", "top-right",
+              "left", "center", "right",
+              "bottom-left", "bottom", "bottom-right"
+            ]
+          },
+          {
+            "id": "rtb-width",
+            "type": "number"
+          },
+          {
+            "id": "rtb-height",
+            "type": "number"
+          },
+          {
+            "id": "rtb-styles",
+            "type": "string"
+          }
+        ]
+      },
+      {
+        "id": "display-banner",
+        "scriptName": "DisplayBanner",
+        "highlight": false,
+        "isAsync": false,
+        "params": [
+          {
+            "id": "rtb-id",
+            "type": "string"
+          }
+        ]
+      },
+      {
+        "id": "refresh-banner",
+        "scriptName": "RefreshBanner",
+        "highlight": false,
+        "isAsync": false,
+        "params": [
+          {
+            "id": "rtb-id",
+            "type": "string"
+          }
+        ]
+      },
+      {
+        "id": "destroy-banner",
+        "scriptName": "DestroyBanner",
+        "highlight": false,
+        "isAsync": false,
+        "params": [
+          {
+            "id": "rtb-id",
+            "type": "string"
+          }
+        ]
+      }
+    ],
+    "expressions": [
+      {
+        "id": "last-banner",
+        "expressionName": "LastBanner",
+        "returnType": "string"
+      }
+    ]
   },
   "metrica": {
     "conditions": [],

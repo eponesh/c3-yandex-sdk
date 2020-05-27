@@ -1,9 +1,172 @@
 "use strict";
 {
+    const DEFAULT_BANNER_STYLES = `
+        display: flex;
+        justify-content: center;
+        align-tems: center;
+        position: absolute;
+        z-index: 10;
+    `;
+
     var Acts = {
         async ShowFullscreen() {
             await this.ready;
             this.ysdk.adv.showFullscreenAdv({ callbacks: {} });
+        },
+
+        async CreateBanner(id, x = 0, y = 0, width = 0, height = 0, styles) {
+            if (this.banners[id]) {
+                return;
+            }
+            await this.rtbReady;
+            const div = document.createElement('div');
+            this.banners[id] = {
+                $el: div,
+                displayed: false
+            };
+
+            div.id = `yandex_rtb_${id}`;
+            div.style.cssText = `
+                ${DEFAULT_BANNER_STYLES}
+                top: ${x}px;
+                left: ${y}px;
+                width: ${width === 0 ? 'auto' : `${width}px`};
+                height: ${height === 0 ? 'auto' : `${height}px`};
+                ${styles}
+            `;
+
+            document.body.appendChild(div);
+
+            Ya.Context.AdvManager.render({
+                blockId: id,
+                renderTo: div.id,
+                async: true,
+                onRender: () => {
+                    this.banners[id].displayed = true;
+                    this.lastBannerID = id;
+                    this.Trigger(this.conditions.OnBannerDisplayed);
+                }
+            });
+        },
+
+        async CreateStickyBanner(id, position = 0, width = 0, height = 0, styles) {
+            if (this.banners[id]) {
+                return;
+            }
+            await this.rtbReady;
+            const div = document.createElement('div');
+            this.banners[id] = {
+                $el: div,
+                displayed: false
+            };
+            div.id = `yandex_rtb_${id}`;
+            const positionStyles = (() => {
+                switch (position) {
+                    case 0: {
+                        return 'top: 0; left: 0;';
+                    }
+                    case 1: {
+                        return 'top: 0; left: 50%; transform: translateX(-50%);';
+                    }
+                    case 2: {
+                        return 'top: 0; right: 0;';
+                    }
+                    case 3: {
+                        return 'top: 0; left: 0; bottom: 0;';
+                    }
+                    case 4: {
+                        return 'top: 50%; left: 50%; transform: translate(-50%, -50%);';
+                    }
+                    case 5: {
+                        return 'top: 0; right: 0; bottom: 0;';
+                    }
+                    case 6: {
+                        return 'bottom: 0; left: 0;';
+                    }
+                    case 7: {
+                        return 'bottom: 0; left: 50%; transform: translateX(-50%);';
+                    }
+                    case 8: {
+                        return 'bottom: 0; right: 0;';
+                    }
+                    default: {
+                        return '';
+                    }
+                }
+            })();
+
+            div.style.cssText = `
+                ${DEFAULT_BANNER_STYLES}
+                ${positionStyles}
+                width: ${width === 0 ? '100%' : `${width}px`};
+                height: ${height === 0 ? '100%' : `${height}px`};
+                ${styles}
+            `;
+
+            document.body.appendChild(div);
+
+            Ya.Context.AdvManager.render({
+                blockId: id,
+                renderTo: div.id,
+                async: true,
+                onRender: () => {
+                    this.banners[id].displayed = true;
+                    this.lastBannerID = id;
+                    this.Trigger(this.conditions.OnBannerDisplayed);
+                }
+            });
+        },
+
+        async DisplayBanner(id) {
+            const banner = this.banners[id];
+            if (!banner) {
+                return;
+            }
+
+            await this.rtbReady;
+            Ya.Context.AdvManager.render({
+                blockId: id,
+                renderTo: banner.$el.id,
+                async: true,
+                onRender: () => {
+                    this.lastBannerID = id;
+                    banner.displayed = true;
+                    this.Trigger(this.conditions.OnBannerDisplayed);
+                }
+            });
+        },
+
+        async RefreshBanner(id) {
+            const banner = this.banners[id];
+            if (!banner) {
+                return;
+            }
+
+            await this.rtbReady;
+            Ya.Context.AdvManager.destroy(id);
+            Ya.Context.AdvManager.render({
+                blockId: id,
+                renderTo: banner.$el.id,
+                async: true,
+                onRender: () => {
+                    this.lastBannerID = id;
+                    banner.displayed = true;
+                    this.Trigger(this.conditions.OnBannerDisplayed);
+                }
+            });
+        },
+
+        async DestroyBanner(id) {
+            const banner = this.banners[id];
+            if (!banner) {
+                return;
+            }
+
+            await this.rtbReady;
+            Ya.Context.AdvManager.destroy(id);
+            this.lastBannerID = id;
+            banner.displayed = false;
+            this.Trigger(this.conditions.OnBannerDestroyed);
         },
 
         async ReachGoal(target) {
@@ -61,9 +224,15 @@
             await this.ready;
             try {
                 const callbacks = {
-                    onOpen: () => this.Trigger(this.conditions.OnRewardedVideoOpen),
+                    onOpen: () => {
+                        this.isRewardedVideoPlaying = true;
+                        this.Trigger(this.conditions.OnRewardedVideoOpen)
+                    },
                     onRewarded: () => this.Trigger(this.conditions.OnRewardedVideoReward),
-                    onClose: () => this.Trigger(this.conditions.OnRewardedVideoClose),
+                    onClose: () => {
+                        this.isRewardedVideoPlaying = false;
+                        this.Trigger(this.conditions.OnRewardedVideoClose)
+                    },
                     onError: () => this.Trigger(this.conditions.OnRewardedVideoError)
                 };
                 this.ysdk.adv.showRewardedVideo({ callbacks });

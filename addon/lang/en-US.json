@@ -28,10 +28,15 @@
           "metrica-id": {
             "name": "Metrica ID",
             "desc": "Yandex.Metrica Counter ID for use Metrica Actions. 0 is don't load and use Metrica."
+          },
+          "rtb-enabled": {
+            "name": "RTB Banners",
+            "desc": "Enable RTB banners. Ads script will be loaded. You can use static banners in project."
           }
         },
         "aceCategories": {
-          "ads": "Ads",
+          "ads": "Integrated Ads",
+          "rtb": "RTB Banners",
           "metrica": "Metrica",
           "player": "Player",
           "purchases": "Purchases",
@@ -254,6 +259,44 @@
             "list-name": "On Any Consume Failed",
             "display-text": "On any consume failed",
             "description": "On any consume purchase failed."
+          },
+          "on-banner-displayed": {
+            "list-name": "On Banner Displayed",
+            "display-text": "On Banner [b]{0}[/b] displayed",
+            "description": "On Banner with ID displayed.",
+            "params": {
+              "rtb-id": {
+                "name": "Banner ID",
+                "desc": "Example: \"R-A-363636-1\"."
+              }
+            }
+          },
+          "on-banner-destroyed": {
+            "list-name": "On Banner Destroyed",
+            "display-text": "On Banner [b]{0}[/b] destroyed",
+            "description": "On Banner with ID destroyed.",
+            "params": {
+              "rtb-id": {
+                "name": "Banner ID",
+                "desc": "Example: \"R-A-363636-1\"."
+              }
+            }
+          },
+          "is-banner-displaying": {
+            "list-name": "Is Banner Displaying",
+            "display-text": "Is Banner [b]{0}[/b] displaying",
+            "description": "Is Banner with ID displaying.",
+            "params": {
+              "rtb-id": {
+                "name": "Banner ID",
+                "desc": "Example: \"R-A-363636-1\"."
+              }
+            }
+          },
+          "is-rewarded-video-playing": {
+            "list-name": "Is Rewarded Video Playing",
+            "display-text": "Is rewarded video playing",
+            "description": "True if rewarded video playing."
           }
         },
         "actions": {
@@ -261,6 +304,108 @@
             "list-name": "Show Fullscreen",
             "display-text": "Show fullscreen banner",
             "description": "Show fullscreen banner."
+          },
+          "create-banner": {
+            "list-name": "Create Banner",
+            "display-text": "Create banner [b]{0}[/b]. [b]X[/b]: {1}, [b]Y[/b]: {2}, [b]W[/b]: {3}, [b]H[/b]: {4}, [b]styles[/b]: {5}.",
+            "description": "Create RTB banner by ID placed on X,Y, with custom width, height or fluid size.",
+            "params": {
+              "rtb-id": {
+                "name": "Banner ID",
+                "desc": "Example: \"R-A-363636-1\"."
+              },
+              "rtb-x": {
+                "name": "X",
+                "desc": "X coordinate."
+              },
+              "rtb-y": {
+                "name": "Y",
+                "desc": "Y coordinate."
+              },
+              "rtb-width": {
+                "name": "Width",
+                "desc": "Block width in pixels or 0 for fluid (100%)."
+              },
+              "rtb-height": {
+                "name": "Height",
+                "desc": "Block height in pixels or 0 for fluid (100%)."
+              },
+              "rtb-styles": {
+                "name": "Styles",
+                "desc": "Custom CSS styles for block."
+              }
+            }
+          },
+          "create-sticky-banner": {
+            "list-name": "Create Sticky Banner",
+            "display-text": "Create sticky banner [b]{0}[/b]. [b]Stick To[/b]: {1}, [b]W[/b]: {2}, [b]H[/b]: {3}, [b]styles[/b]: {4}.",
+            "description": "Create RTB banner by ID placed on X,Y, with custom width, height or fluid size.",
+            "params": {
+              "rtb-id": {
+                "name": "Banner ID",
+                "desc": "Example: \"R-A-363636-1\"."
+              },
+              "rtb-position": {
+                "name": "Stick to",
+                "desc": "Position on screen to stick.",
+                "items": {
+                  "top-left": "Top-left",
+                  "top": "Top",
+                  "top-right": "Top-right",
+                  "left": "Left",
+                  "center": "Center",
+                  "right": "Right",
+                  "bottom-left": "Bottom-left",
+                  "bottom": "Bottom",
+                  "bottom-right": "Bottom-right"
+                }
+              },
+              "rtb-width": {
+                "name": "Width",
+                "desc": "Block width in pixels or 0 for fluid (100%)."
+              },
+              "rtb-height": {
+                "name": "Height",
+                "desc": "Block height in pixels or 0 for fluid (100%)."
+              },
+              "rtb-styles": {
+                "name": "Styles",
+                "desc": "Custom CSS styles for block."
+              }
+            }
+          },
+          "display-banner": {
+            "list-name": "Display Banner",
+            "display-text": "Display banner [b]{0}[/b]",
+            "description": "Display RTB banner by ID if destroyed.",
+            "params": {
+              "rtb-id": {
+                "name": "Banner ID",
+                "desc": "Example: \"R-A-363636-1\"."
+              }
+            }
+          },
+          "refresh-banner": {
+            "list-name": "Refresh Banner",
+            "display-text": "Refresh banner [b]{0}[/b]",
+            "description": "Refresh RTB banner by ID. (Destroy and recreate banner).",
+            "params": {
+              "rtb-id": {
+                "name": "Banner ID",
+                "desc": "Example: \"R-A-363636-1\"."
+              }
+            }
+          },
+          "destroy-banner": {
+            "list-name": "Destroy Banner",
+            "display-text": "Destroy banner [b]{0}[/b]",
+            "description": "Destroy RTB banner by ID.",
+            "params": {
+              "rtb-id": {
+                "name": "Banner ID",
+                "desc": "Example: \"R-A-363636-1\"."
+              }
+            }
           },
           "reach-goal": {
             "list-name": "Reach Goal",
@@ -515,6 +660,10 @@
                 "desc": "Key of player data."
               }
             }
+          },
+          "last-banner": {
+            "translated-name": "Last Banner",
+            "description": "Last Banner ID"
           }
         }
       }
