@@ -12,11 +12,61 @@ Yandex SDK API Manager for Yandex.Games
 
  **Param: Metrica ID**  *(Yandex.Metrica Counter ID for use Metrica Actions. 0 is don't load and use Metrica.)* 
 
+ **Param: RTB Banners**  *(Enable RTB banners. Ads script will be loaded. You can use static banners in project.)* 
+
 ## Actions
 
 ### Show Fullscreen
 
 Show fullscreen banner.
+
+### Create Banner
+
+ **Param: Banner ID**  *(Example: "R-A-363636-1".)* 
+
+ **Param: X**  *(X coordinate.)* 
+
+ **Param: Y**  *(Y coordinate.)* 
+
+ **Param: Width**  *(Block width in pixels or 0 for fluid (100%).)* 
+
+ **Param: Height**  *(Block height in pixels or 0 for fluid (100%).)* 
+
+ **Param: Styles**  *(Custom CSS styles for block.)* 
+
+Create RTB banner by ID placed on X,Y, with custom width, height or fluid size.
+
+### Create Sticky Banner
+
+ **Param: Banner ID**  *(Example: "R-A-363636-1".)* 
+
+ **Param: Stick to**  *(Position on screen to stick.)* 
+
+ **Param: Width**  *(Block width in pixels or 0 for fluid (100%).)* 
+
+ **Param: Height**  *(Block height in pixels or 0 for fluid (100%).)* 
+
+ **Param: Styles**  *(Custom CSS styles for block.)* 
+
+Create RTB banner by ID placed on X,Y, with custom width, height or fluid size.
+
+### Display Banner
+
+ **Param: Banner ID**  *(Example: "R-A-363636-1".)* 
+
+Display RTB banner by ID if destroyed.
+
+### Refresh Banner
+
+ **Param: Banner ID**  *(Example: "R-A-363636-1".)* 
+
+Refresh RTB banner by ID. (Destroy and recreate banner).
+
+### Destroy Banner
+
+ **Param: Banner ID**  *(Example: "R-A-363636-1".)* 
+
+Destroy RTB banner by ID.
 
 ### Reach Goal
 
@@ -236,6 +286,28 @@ On any consume purchase success.
 
 On any consume purchase failed.
 
+### On Banner Displayed
+
+ **Param: Banner ID**  *(Example: "R-A-363636-1".)* 
+
+On Banner with ID displayed.
+
+### On Banner Destroyed
+
+ **Param: Banner ID**  *(Example: "R-A-363636-1".)* 
+
+On Banner with ID destroyed.
+
+### Is Banner Displaying
+
+ **Param: Banner ID**  *(Example: "R-A-363636-1".)* 
+
+Is Banner with ID displaying.
+
+### Is Rewarded Video Playing
+
+True if rewarded video playing.
+
 ## Expressions
 
 ### Player Name
@@ -347,4 +419,8 @@ Get player state by Key.
  **Param: Key**  *(Key of player data.)* 
 
 Get player data by Key.
+
+### Last Banner
+
+Last Banner ID
 

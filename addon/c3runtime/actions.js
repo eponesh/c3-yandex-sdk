@@ -1,178 +1,56 @@
 "use strict";
 {
-    const DEFAULT_BANNER_STYLES = `
-        display: flex;
-        justify-content: center;
-        align-tems: center;
-        position: absolute;
-        z-index: 10;
-    `;
-
     var Acts = {
         async ShowFullscreen() {
             await this.ready;
-            this.ysdk.adv.showFullscreenAdv({ callbacks: {} });
+            this._showFullscreenAdv();
         },
 
         async CreateBanner(id, x = 0, y = 0, width = 0, height = 0, styles) {
-            if (this.banners[id]) {
-                return;
+            if (!this.banners[id]) {
+                this.banners[id] = { displayed: false };
+                await this.rtbReady;
+                this._rtbCreateBanner({ id, x, y, width, height, styles });
             }
-            await this.rtbReady;
-            const div = document.createElement('div');
-            this.banners[id] = {
-                $el: div,
-                displayed: false
-            };
-
-            div.id = `yandex_rtb_${id}`;
-            div.style.cssText = `
-                ${DEFAULT_BANNER_STYLES}
-                top: ${x}px;
-                left: ${y}px;
-                width: ${width === 0 ? 'auto' : `${width}px`};
-                height: ${height === 0 ? 'auto' : `${height}px`};
-                ${styles}
-            `;
-
-            document.body.appendChild(div);
-
-            Ya.Context.AdvManager.render({
-                blockId: id,
-                renderTo: div.id,
-                async: true,
-                onRender: () => {
-                    this.banners[id].displayed = true;
-                    this.lastBannerID = id;
-                    this.Trigger(this.conditions.OnBannerDisplayed);
-                }
-            });
         },
 
         async CreateStickyBanner(id, position = 0, width = 0, height = 0, styles) {
-            if (this.banners[id]) {
-                return;
+            if (!this.banners[id]) {
+                this.banners[id] = { displayed: false };
+                await this.rtbReady;
+                this._rtbCreateStickyBanner({ id, position, width, height, styles });
             }
-            await this.rtbReady;
-            const div = document.createElement('div');
-            this.banners[id] = {
-                $el: div,
-                displayed: false
-            };
-            div.id = `yandex_rtb_${id}`;
-            const positionStyles = (() => {
-                switch (position) {
-                    case 0: {
-                        return 'top: 0; left: 0;';
-                    }
-                    case 1: {
-                        return 'top: 0; left: 50%; transform: translateX(-50%);';
-                    }
-                    case 2: {
-                        return 'top: 0; right: 0;';
-                    }
-                    case 3: {
-                        return 'top: 0; left: 0; bottom: 0;';
-                    }
-                    case 4: {
-                        return 'top: 50%; left: 50%; transform: translate(-50%, -50%);';
-                    }
-                    case 5: {
-                        return 'top: 0; right: 0; bottom: 0;';
-                    }
-                    case 6: {
-                        return 'bottom: 0; left: 0;';
-                    }
-                    case 7: {
-                        return 'bottom: 0; left: 50%; transform: translateX(-50%);';
-                    }
-                    case 8: {
-                        return 'bottom: 0; right: 0;';
-                    }
-                    default: {
-                        return '';
-                    }
-                }
-            })();
-
-            div.style.cssText = `
-                ${DEFAULT_BANNER_STYLES}
-                ${positionStyles}
-                width: ${width === 0 ? '100%' : `${width}px`};
-                height: ${height === 0 ? '100%' : `${height}px`};
-                ${styles}
-            `;
-
-            document.body.appendChild(div);
-
-            Ya.Context.AdvManager.render({
-                blockId: id,
-                renderTo: div.id,
-                async: true,
-                onRender: () => {
-                    this.banners[id].displayed = true;
-                    this.lastBannerID = id;
-                    this.Trigger(this.conditions.OnBannerDisplayed);
-                }
-            });
         },
 
         async DisplayBanner(id) {
-            const banner = this.banners[id];
-            if (!banner) {
-                return;
+            if (this.banners[id]) {
+                await this.rtbReady;
+                this._rtbDisplayBanner({ id });
             }
-
-            await this.rtbReady;
-            Ya.Context.AdvManager.render({
-                blockId: id,
-                renderTo: banner.$el.id,
-                async: true,
-                onRender: () => {
-                    this.lastBannerID = id;
-                    banner.displayed = true;
-                    this.Trigger(this.conditions.OnBannerDisplayed);
-                }
-            });
         },
 
         async RefreshBanner(id) {
-            const banner = this.banners[id];
-            if (!banner) {
-                return;
+            if (this.banners[id]) {
+                await this.rtbReady;
+                this.banners[id].displayed = false;
+                this._rtbRefreshBanner({ id });
             }
-
-            await this.rtbReady;
-            Ya.Context.AdvManager.destroy(id);
-            Ya.Context.AdvManager.render({
-                blockId: id,
-                renderTo: banner.$el.id,
-                async: true,
-                onRender: () => {
-                    this.lastBannerID = id;
-                    banner.displayed = true;
-                    this.Trigger(this.conditions.OnBannerDisplayed);
-                }
-            });
         },
 
         async DestroyBanner(id) {
-            const banner = this.banners[id];
-            if (!banner) {
-                return;
+            if (this.banners[id]) {
+                await this.rtbReady;
+                this.banners[id].displayed = false;
+                this.lastBannerID = id;
+                this._rtbDestroyBanner({ id });
+                this.Trigger(this.conditions.OnBannerDestroyed);
             }
-
-            await this.rtbReady;
-            Ya.Context.AdvManager.destroy(id);
-            this.lastBannerID = id;
-            banner.displayed = false;
-            this.Trigger(this.conditions.OnBannerDestroyed);
         },
 
         async ReachGoal(target) {
             await this.metricaReady;
             console.log('Reach Goal: ', target);
-            ym(this.metricaId, 'reachGoal', target);
+            this._reachGoal({ target });
         },
 
         async SignIn() {
@@ -181,7 +59,8 @@
 
         async LoadCatalog() {
             try {
-                this.products = await this.payments.getCatalog();
+                await this.paymentsReady;
+                this.products = await this._getCatalog();
                 this.Trigger(this.conditions.OnCatalogLoadSuccess);
             } catch (err) {
                 this.Trigger(this.conditions.OnCatalogLoadFailed);
@@ -198,7 +77,8 @@
             }
 
             try {
-                this.purchases = await this.payments.getPurchases();
+                await this.paymentsReady;
+                this.purchases = await this._getPurchases();
                 this.Trigger(this.conditions.OnPurchasesLoadSuccess);
             } catch (err) {
                 this.Trigger(this.conditions.OnPurchasesLoadFailed);
@@ -207,7 +87,8 @@
 
         async Buy(purchaseId) {
             try {
-                const purchase = await this.payments.purchase(purchaseId);
+                await this.paymentsReady;
+                const purchase = await this._purchase({ purchaseId });
                 this.purchases.push(purchase);
                 this.lastPurchaseID = purchaseId;
                 this.lastPurchaseToken = purchase.purchaseToken;
@@ -223,19 +104,7 @@
         async ShowRewardedVideo() {
             await this.ready;
             try {
-                const callbacks = {
-                    onOpen: () => {
-                        this.isRewardedVideoPlaying = true;
-                        this.Trigger(this.conditions.OnRewardedVideoOpen)
-                    },
-                    onRewarded: () => this.Trigger(this.conditions.OnRewardedVideoReward),
-                    onClose: () => {
-                        this.isRewardedVideoPlaying = false;
-                        this.Trigger(this.conditions.OnRewardedVideoClose)
-                    },
-                    onError: () => this.Trigger(this.conditions.OnRewardedVideoError)
-                };
-                this.ysdk.adv.showRewardedVideo({ callbacks });
+                await this._showRewardedVideo();
             } catch (error) {
                 this.Trigger(this.conditions.OnRewardedVideoError);
             }
@@ -244,7 +113,8 @@
         async ConsumePurchase(id) {
             const purchase = this.purchases.find(p => p.productID === id);
             try {
-                await this.payments.consumePurchase(purchase.purchaseToken);
+                await this.paymentsReady;
+                await this._consumePurchase({ purchaseToken: purchase.purchaseToken });
                 this.purchases = this.purchases.filter(p => p.productID !== id);
                 this.lastPurchaseID = id;
                 this.lastPurchaseToken = purchase ? purchase.token : '';
@@ -266,8 +136,8 @@
             }
 
             try {
-                await this.player.incrementStats( {[key]: value });
-                const stats = await this.player.getStats([key]);
+                await this._incrementPlayerStats({ [key]: value });
+                const stats = await this._getPlayerStats([key]);
                 this.playerStats[key] = stats[key] || 0;
             } catch (error) {
                 this.lastStateKey = key;
@@ -278,8 +148,8 @@
         async SetState(key, value) {
             this.playerStats[key] = value;
             try {
-                await this.player.setStats( {[key]: value });
-                const stats = await this.player.getStats([key]);
+                await this._setPlayerStats( {[key]: value });
+                const stats = await this._getPlayerStats([key]);
                 this.playerStats[key] = stats[key] || 0;
             } catch (error) {
                 this.lastStateKey = key;
@@ -290,7 +160,9 @@
         async SetData(key, value) {
             this.playerData[key] = value;
             try {
-                await this.player.setData( {[key]: value });
+                await this._setPlayerData({ [key]: value });
+                const data = await this._getPlayerData([key]);
+                this.playerData[key] = data[key] || '';
             } catch (error) {
                 this.lastDataKey = key;
                 this.Trigger(this.conditions.OnSetPlayerDataFailed);
@@ -299,7 +171,7 @@
 
         async LoadStats() {
             try {
-                this.playerStats = (await this.player.getStats()) || {};
+                this.playerStats = (await this._getPlayerFullStats()) || {};
                 this.Trigger(this.conditions.OnLoadPlayerStatsSuccess);
             } catch (err) {
                 this.Trigger(this.conditions.OnLoadPlayerStatsFailed);
@@ -308,7 +180,7 @@
 
         async LoadData() {
             try {
-                this.playerData = (await this.player.getData()) || {};
+                this.playerData = (await this._getPlayerFullData()) || {};
                 this.Trigger(this.conditions.OnLoadPlayerDataSuccess);
             } catch (err) {
                 this.Trigger(this.conditions.OnLoadPlayerDataFailed);
@@ -319,8 +191,6 @@
     if (globalThis.C3) {
         C3.Plugins.Eponesh_YandexSDK.Acts = Acts;
     }
-
-    try { module.exports = Acts } catch (e) {}
 
     Acts;
 }

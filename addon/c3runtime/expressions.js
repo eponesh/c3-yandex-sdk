@@ -2,23 +2,23 @@
 {
     var Exps = {
         PlayerName() {
-            return this.player ? this.player.getName() : '';
+            return this.player.name;
         },
 
         PlayerId() {
-            return this.player ? this.player.getID() : '';
+            return this.player.id;
         },
 
         PlayerPhotoSmall() {
-            return this.player ? this.player.getPhoto('small') : '';
+            return this.player.photoSmall;
         },
 
         PlayerPhotoMedium() {
-            return this.player ? this.player.getPhoto('medium') : '';
+            return this.player.photoMedium;
         },
 
         PlayerPhotoLarge() {
-            return this.player ? this.player.getPhoto('large') : '';
+            return this.player.photoLarge;
         },
 
         CurrentProductID() {
@@ -105,8 +105,6 @@
     if (globalThis.C3) {
         C3.Plugins.Eponesh_YandexSDK.Exps = Exps;
     }
-
-    try { module.exports = Exps } catch (e) {}
 
     Exps;
 }
