@@ -1,9 +1,9 @@
 "use strict";
 {
-    var SDKInstanceBase = globalThis.C3 ? globalThis.C3.SDKInstanceBase : class {}
-    var Instance = class YandexSDKInstance extends SDKInstanceBase {
+    var SDKDOMInstanceBase = globalThis.C3 ? globalThis.C3.SDKDOMInstanceBase : class {}
+    var Instance = class YandexSDKInstance extends SDKDOMInstanceBase {
         constructor(inst, properties = []) {
-            super(inst);
+            super(inst, 'Eponesh_YandexSDK');
             if (!globalThis.C3) {
                 return;
             }
@@ -11,10 +11,7 @@
             this.init(properties);
         }
 
-        init (properties) {
-            this.ready = new Promise(resolve => this.init = resolve);
-            this.rtbReady = new Promise(resolve => this.initRTB = resolve);
-
+        async init (properties) {
             this.enableFullscreenOnStart = properties[0];
             this.setOrientation(properties[1]);
             this.isOrientationLocked = properties[2];
@@ -47,23 +44,33 @@
             this.lastStateKey = '';
             this.lastDataKey = '';
 
+            this.player = {
+                name: '',
+                id: '',
+                photoSmall: '',
+                photoMedium: '',
+                photoLarge: ''
+            };
+
             if (this.metricaId) {
-                this.loadMetrica();
-                this.metricaReady = new Promise((resolve) => {
-                    if (window[`yaCounter${this.metricaId}`]) {
-                        resolve();
-                        return;
-                    }
-    
-                    document.addEventListener(`yacounter${this.metricaId}inited`, resolve);
-                });
+                this.metricaReady = this.PostToDOMElementAsync('INIT_METRICA', { metricaId: this.metricaId });
             }
 
             if (this.enableRTB) {
-                this.loadRTB();
+                this.rtbReady = this.PostToDOMElementAsync('INIT_RTB');
             }
 
-            this.loadSDK();
+            const screen = { fullscreen: this.enableFullscreenOnStart };
+            if (this.fullscreenOrientation !== null) {
+                screen.orientation = {
+                    value: this.fullscreenOrientation,
+                    lock: this.isOrientationLocked
+                };
+            }
+
+            this.ready = this.PostToDOMElementAsync('INIT_SDK', { screen });
+            await this.ready;
+            this.paymentsReady = this._getPayments({ signed: true });
         }
 
         Release() {
@@ -103,7 +110,7 @@
             }
         }
 
-        onAdvClosed(wasShown) {
+        onAdvClosed({ wasShown }) {
             console.log('Adv was closed, shown:', wasShown);
             this.Trigger(this.conditions.OnAdvClosed);
 
@@ -117,12 +124,12 @@
 
         async getPlayer() {
             try {
-                const player = await this.ysdk.getPlayer();
+                const player = await this._getPlayer();
                 this.setPlayer(player);
             } catch (err) {
                 try {
-                    await this.ysdk.auth.openAuthDialog();
-                    const player = await this.ysdk.getPlayer();
+                    await this._openAuthDialog();
+                    const player = await this._getPlayer();
                     this.setPlayer(player);
                 } catch (err) {
                     this.Trigger(this.conditions.OnSignInFailed);
@@ -145,78 +152,127 @@
             return this.products.find(p => p.productID === id) || {};
         }
 
-        loadSDK() {
-            const initSDK = async () => {
-                const screen = { fullscreen: this.enableFullscreenOnStart };
-
-                if (this.fullscreenOrientation !== null) {
-                    screen.orientation = {
-                        value: this.fullscreenOrientation,
-                        lock: this.isOrientationLocked
-                    };
-                }
-
-                this.ysdk = await YaGames.init({
-                    screen,
-                    adv: {
-                        onAdvClose: (wasShown) => this.onAdvClosed(wasShown)
-                    },
-                });
-
-                this.ysdk.getPayments({ signed: true })
-                    .then(p => this.payments = p)
-                    .catch(console.error);
-
-                this.init();
-            }
-
-            (function(d) {
-                var t = d.getElementsByTagName('script')[0];
-                var s = d.createElement('script');
-                s.src = 'https://yandex.ru/games/sdk/v2';
-                s.async = true;
-                t.parentNode.insertBefore(s, t);
-                s.onload = initSDK;
-            })(document);
+        onRewardedOpen () {
+            this.isRewardedVideoPlaying = true;
+            this.Trigger(this.conditions.OnRewardedVideoOpen);
         }
 
-        loadMetrica() {
-            (function(m, e, t, r, i, k, a) {
-                m[i] = m[i] || function() {
-                    (m[i].a = m[i].a || []).push(arguments)
-                };
-                m[i].l = 1 * new Date();
-                k = e.createElement(t), a = e.getElementsByTagName(t)[0], k.async = 1, k.src = r, a.parentNode.insertBefore(k, a)
-            })
-            (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
-
-            ym(this.metricaId, "init", {
-                clickmap: true,
-                trackLinks: true,
-                accurateTrackBounce: true,
-                triggerEvent: true
-            });
+        onRewardedReward () {
+            this.Trigger(this.conditions.OnRewardedVideoReward);
         }
 
-        loadRTB () {
-            ((w, d, n, s, t) => {
-                w[n] = w[n] || [];
-                t = d.getElementsByTagName("script")[0];
-                s = d.createElement("script");
-                s.onload = () => this.initRTB();
-                s.type = "text/javascript";
-                s.src = "//an.yandex.ru/system/context.js";
-                s.async = true;
-                t.parentNode.insertBefore(s, t);
-            })(window, document, "yandexContextAsyncCallbacks");
+        onRewardedClose () {
+            this.isRewardedVideoPlaying = false;
+            this.Trigger(this.conditions.OnRewardedVideoClose);
+        }
+
+        onRewardedError () {
+            this.Trigger(this.conditions.OnRewardedVideoError);
+        }
+
+        onRTBRender ({ id }) {
+            this.banners[id].displayed = true;
+            this.lastBannerID = id;
+            this.Trigger(this.conditions.OnBannerDisplayed);
+        }
+
+        _getPayments (options) {
+            return this.PostToDOMElementAsync('YSDK_PAYMENTS_GET', options);
+        }
+
+        _getPurchases () {
+            return this.PostToDOMElementAsync('YSDK_PAYMENTS_GET_PURCHASES');
+        }
+
+        _getCatalog () {
+            return this.PostToDOMElementAsync('YSDK_PAYMENTS_GET_CATALOG');
+        }
+
+        _purchase (options) {
+            return this.PostToDOMElementAsync('YSDK_PAYMENTS_PURCHASE', options);
+        }
+
+        _consumePurchase (options) {
+            return this.PostToDOMElementAsync('YSDK_PAYMENTS_CONSUME_PURCHASE', options);
+        }
+
+        _openAuthDialog () {
+            return this.PostToDOMElementAsync('YSDK_AUTH_OPEN');
+        }
+
+        _getPlayer () {
+            return this.PostToDOMElementAsync('YSDK_PLAYER_GET');
+        }
+
+        _showFullscreenAdv () {
+            return this.PostToDOMElementAsync('YSDK_ADS_SHOW_FULLSCREEN');
+        }
+
+        _showRewardedVideo () {
+            return this.PostToDOMElementAsync('YSDK_ADS_SHOW_REWARDED');
+        }
+
+        _getPlayerFullStats () {
+            return this.PostToDOMElementAsync('YSDK_PLAYER_GET_FULL_STATS');
+        }
+
+        _getPlayerStats (payload) {
+            return this.PostToDOMElementAsync('YSDK_PLAYER_GET_STATS', payload);
+        }
+
+        _setPlayerStats (payload) {
+            return this.PostToDOMElementAsync('YSDK_PLAYER_SET_STATS', payload);
+        }
+
+        _incrementPlayerStats (payload) {
+            return this.PostToDOMElementAsync('YSDK_PLAYER_INCREMENT_STATS', payload);
+        }
+
+        _getPlayerFullData () {
+            return this.PostToDOMElementAsync('YSDK_PLAYER_GET_FULL_DATA');
+        }
+
+        _getPlayerData (payload) {
+            return this.PostToDOMElementAsync('YSDK_PLAYER_GET_DATA', payload);
+        }
+
+        _setPlayerData (payload) {
+            return this.PostToDOMElementAsync('YSDK_PLAYER_SET_DATA', payload);
+        }
+
+        _reachGoal (payload) {
+            return this.PostToDOMElement('YSDK_METRICA_REACH_GOAL', payload);
+        }
+
+        _rtbCreateBanner (payload) {
+            return this.PostToDOMElement('YSDK_RTB_CREATE_BANNER', payload);
+        }
+
+        _rtbCreateStickyBanner (payload) {
+            return this.PostToDOMElement('YSDK_RTB_CREATE_STICKY_BANNER', payload);
+        }
+
+        _rtbDestroyBanner (payload) {
+            return this.PostToDOMElement('YSDK_RTB_DESTROY_BANNER', payload);
+        }
+
+        _rtbRefreshBanner (payload) {
+            return this.PostToDOMElement('YSDK_RTB_REFRESH_BANNER', payload);
+        }
+
+        /**
+         * @override
+         * Plugin must be registered as world instance
+         * and required to be rendered on layout, but :) just ignore it
+         */
+        Tick () {
+            return false;
         }
     };
 
     if (globalThis.C3) {
         C3.Plugins.Eponesh_YandexSDK.Instance = Instance;
     }
-
-    try { module.exports = Instance } catch (e) {}
 
     Instance;
 }

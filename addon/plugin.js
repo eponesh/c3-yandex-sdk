@@ -1,7 +1,7 @@
 "use strict";
 {
     const PLUGIN_ID = "Eponesh_YandexSDK";
-    const PLUGIN_VERSION = "1.2.0";
+    const PLUGIN_VERSION = "1.3.1";
     const PLUGIN_CATEGORY = "platform-specific";
 
     const PLUGIN_CLASS = SDK.Plugins.Eponesh_YandexSDK = class YandexSDKPlugin extends SDK.IPluginBase {
@@ -18,7 +18,9 @@
             this._info.SetHelpUrl(lang(".help-url"));
             this._info.SetIsSingleGlobal(true);
 
+            /** @deprecated c2 runtime */
             this._info.SetSupportedRuntimes(["c2", "c3"]);
+            this._info.SetDOMSideScripts(["c3runtime/dom.js"]);
 
             SDK.Lang.PushContext(".properties");
 

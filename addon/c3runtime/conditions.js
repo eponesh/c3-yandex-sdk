@@ -1,10 +1,6 @@
 "use strict";
 {
     function each (runtime, array, cb) {
-        if ('getCurrentEventStack' in runtime) {
-            eachC2(runtime, array, cb);
-            return;
-        }
         const eventSheetManager = runtime.GetEventSheetManager();
         const currentEvent = runtime.GetCurrentEvent();
         const solModifiers = currentEvent.GetSolModifiers();
@@ -26,26 +22,6 @@
 
         // Pop the event stack frame
         eventStack.Pop();
-    }
-
-    function eachC2 (runtime, array, cb) {
-        const current_frame = runtime.getCurrentEventStack();
-		const current_event = current_frame.current_event;
-        const colModifiedAfterCnds = current_frame.isModifierAfterCnds();
-
-        if (colModifiedAfterCnds) {
-            array.forEach((item) => {
-                runtime.pushCopySol(current_event.solModifiers);
-                cb(item);
-                current_event.retrigger();
-                runtime.popSol(current_event.solModifiers);
-            });
-        } else {
-            array.forEach((item) => {
-                cb(item);
-                current_event.retrigger();
-            });
-        }
     }
 
     var Cnds = {
@@ -115,11 +91,11 @@
 
         EachProduct() {
             each(this._runtime, this.products, (product) => {
-                this.currentProductID = product.id || product.productID;
+                this.currentProductID = product.productID;
                 this.currentProductTitle = product.title;
                 this.currentProductDescription = product.description;
                 this.currentProductImage = product.imageURI;
-                this.currentProductPrice = parseFloat(product.price);
+                this.currentProductPrice = product.price;
             });
 
             return false;
@@ -216,8 +192,6 @@
     if (globalThis.C3) {
         C3.Plugins.Eponesh_YandexSDK.Cnds = Cnds;
     }
-
-    try { module.exports = Cnds } catch (e) {}
 
     Cnds;
 }
