@@ -23,6 +23,8 @@
         constructor(iRuntime) {
             super(iRuntime, ELEMENT_ID);
 
+            this.$banners = {};
+
             // INIT
             this.AddDOMElementMessageHandler('INIT_SDK', (_, sdkOptions) => this.loadSDK(sdkOptions));
             this.AddDOMElementMessageHandler('INIT_RTB', () => this.loadRTB());
@@ -108,34 +110,39 @@
 
             // RTB BANNERS
             this.AddDOMElementMessageHandler('YSDK_RTB_CREATE_BANNER', (_, { id, x, y, width, height, styles }) => {
-                this.insertBanner(id, `
-                    ${DEFAULT_BANNER_STYLES}
-                    top: ${x}px;
-                    left: ${y}px;
-                    width: ${width === 0 ? 'auto' : `${width}px`};
-                    height: ${height === 0 ? 'auto' : `${height}px`};
-                    ${styles}
-                `);
+                if (!this.$banners[id]) {
+                    this.$banners[id] = this.createBanner(id, `
+                        ${DEFAULT_BANNER_STYLES}
+                        top: ${x}px;
+                        left: ${y}px;
+                        width: ${width === 0 ? 'auto' : `${width}px`};
+                        height: ${height === 0 ? 'auto' : `${height}px`};
+                        ${styles}
+                    `);
+                }
+
                 this.rtbRenderBanner(id);
             });
 
             this.AddDOMElementMessageHandler('YSDK_RTB_CREATE_STICKY_BANNER', (_, { id, position, width, height, styles }) => {
-                this.insertBanner(id, `
-                    ${DEFAULT_BANNER_STYLES}
-                    ${POSITIONS_MAP[position] || ''}
-                    width: ${width === 0 ? '100%' : `${width}px`};
-                    height: ${height === 0 ? '100%' : `${height}px`};
-                    ${styles}
-                `);
+                if (!this.$banners[id]) {
+                    this.$banners[id] = this.createBanner(id, `
+                        ${DEFAULT_BANNER_STYLES}
+                        ${POSITIONS_MAP[position] || ''}
+                        width: ${width === 0 ? '100%' : `${width}px`};
+                        height: ${height === 0 ? '100%' : `${height}px`};
+                        ${styles}
+                    `);
+                }
                 this.rtbRenderBanner(id);
             });
 
-            this.AddDOMElementMessageHandler('YSDK_RTB_DESTROY_BANNER', (_, { id }) => Ya.Context.AdvManager.destroy(id));
+            this.AddDOMElementMessageHandler('YSDK_RTB_DESTROY_BANNER', (_, { id }) => this.destroyBanner(id));
             this.AddDOMElementMessageHandler('YSDK_RTB_DISPLAY_BANNER', (_, { id }) => {
                 this.rtbRenderBanner(id);
             });
             this.AddDOMElementMessageHandler('YSDK_RTB_REFRESH_BANNER', (_, { id }) => {
-                Ya.Context.AdvManager.destroy(id);
+                this.destroyBanner(id);
                 this.rtbRenderBanner(id);
             });
         }
@@ -197,6 +204,12 @@
         }
 
         rtbRenderBanner (id) {
+            if (!this.$banners[id]) {
+                return;
+            }
+
+            document.body.appendChild(this.$banners[id]);
+
             Ya.Context.AdvManager.render({
                 blockId: id,
                 renderTo: id,
@@ -205,11 +218,18 @@
             });
         }
 
-        insertBanner (id, styles) {
+        createBanner (id, styles) {
             const div = document.createElement('div');
             div.id = id;
             div.style.cssText = styles;
-            document.body.appendChild(div);
+            return div;
+        }
+
+        destroyBanner (id) {
+            if (this.$banners[id]) {
+                this.$banners[id].remove();
+                this.$banners[id].innerHTML = '';
+            }
         }
     }
 
